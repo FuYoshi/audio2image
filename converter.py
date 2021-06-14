@@ -6,30 +6,22 @@ import argparse
 def file_extract(image):
     with open(image, 'rb') as f:
         data = binascii.hexlify(f.read())
-
-    marker = bytes("STARTSOUND", encoding="ASCII")
-    marker = binascii.hexlify(marker)
-    data = data.split(marker, 1)[1]
-
-    data = binascii.a2b_hex(data)
-    with open("result.mp3", 'wb') as image_file:
-        image_file.write(data)
+    marker = binascii.hexlify(bytes("STARTSOUND", encoding="ASCII"))
+    data_s = binascii.a2b_hex(data.split(marker, 2)[2])
+    ext = str(binascii.unhexlify(data.split(marker, 2)[1])).split("'", 2)[1]
+    with open("result." + ext, 'wb') as image_file:
+        image_file.write(data_s)
 
 
 def file_merge(image, audio):
     with open(image, 'rb') as f:
         data = binascii.hexlify(f.read())
-
-    marker = bytes("STARTSOUND", encoding="ASCII")
-    data += binascii.hexlify(marker)
-
+    marker = binascii.hexlify(bytes("STARTSOUND" + audio.split('.', 2)[2] +
+                                    "STARTSOUND", encoding="ASCII"))
     with open(audio, 'rb') as fp:
         music = binascii.hexlify(fp.read())
-
-    data += music
-
-    data = binascii.a2b_hex(data)
-    with open("result.png", 'wb') as image_file:
+    data = binascii.a2b_hex(data + marker + music)
+    with open("result." + image.split('.', 2)[2], 'wb') as image_file:
         image_file.write(data)
 
 
