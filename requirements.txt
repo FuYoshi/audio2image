@@ -1,1 +1,7 @@
-streamlit==0.79.0
+streamlit
+binascii
+sys
+argparse
+sha256
+string
+random
