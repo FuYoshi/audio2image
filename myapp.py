@@ -23,44 +23,38 @@ requirements.txt: this file is used by heroku to import modules.
 setup.sh: this file is used by heroku.
 """
 
+
 import streamlit as st
+import converter
+
 
 st.title("WEB APP TITLE")
 
 
-def image_to_audio(uploaded_file):
-    """ Convert the uploaded image file to an audio file. """
-    # TODO: convert image to audio instead of displaying it
-    st.image(uploaded_file)
-
-
-def audio_to_image(uploaded_file):
-    """ Convert the uploaded audio file to an image file. """
-    # TODO: convert audio to image instead of playing it
-    st.audio(uploaded_file)
-
-
 # Show the radio button widget to select the conversion mode.
-mode = st.radio("Mode", ("image to audio", "audio to image"))
+mode_merge = "merge"
+mode_extract = "extract"
+mode = st.radio("Mode", (mode_merge, mode_extract))
 
-if mode == "image to audio":
+if mode == mode_merge:
+    # Show the upload file widgets.
+    image = st.file_uploader("Choose an image file",
+        type=["png", "jpg", "jpeg"])
+    audio = st.file_uploader("Choose an audio file",
+        type=["wav", "mp3"])
+
+    # Convert the file after pressing the "convert" button.
+    if image and audio is not None and st.button("Merge"):
+        converter.file_merge('./' + image.name, './' + audio.name, None)
+
+elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
     uploaded_file = st.file_uploader("Choose a file to convert",
         type=["png", "jpg", "jpeg"])
 
     # Convert the file after pressing the "convert" button.
-    if uploaded_file is not None and st.button("Convert", key="image"):
-        image_to_audio(uploaded_file)
-
-elif mode == "audio to image":
-    # Show the upload file widget that accepts sound files.
-    uploaded_file = st.file_uploader("Choose a file to convert",
-        type=["wav", "mp3"])
-
-    # Convert the file after pressing the "convert" button.
-    if uploaded_file is not None and st.button("Convert", key="audio"):
-        audio_to_image(uploaded_file)
-
+    if uploaded_file is not None and st.button("Extract"):
+        converter.file_extract(uploaded_file.name, None)
 
 if st.button("Record"):
     # TODO: a way to record the user and convert it.
