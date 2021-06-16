@@ -55,6 +55,7 @@ def file_extract(image, password):
         data_s = binascii.a2b_hex(data_s)
         with open("result." + ext, 'wb') as image_file:
             image_file.write(data_s)
+    return image_file
 
 
 def file_merge(image, audio, password):
@@ -84,6 +85,7 @@ def file_merge(image, audio, password):
         data = binascii.a2b_hex(data + marker + music)
         with open("result." + image.split('.', 2)[2], 'wb') as image_file:
             image_file.write(data)
+    return image_file
 
 
 parser = argparse.ArgumentParser()
