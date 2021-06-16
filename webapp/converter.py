@@ -98,9 +98,9 @@ parser.add_argument("-p", "--password",
 
 args = parser.parse_args()
 
-if (args.extract is None and args.merge is None):
-    print("Incorrect usage, add flag --help for help")
-    sys.exit(1)
+# if (args.extract is None and args.merge is None):
+#     print("Incorrect usage, add flag --help for help")
+#     sys.exit(1)
 
 if (args.extract is not None):
     file_extract(args.extract, args.password)
