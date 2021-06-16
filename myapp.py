@@ -35,7 +35,6 @@ st.title("WEB APP TITLE")
 mode_merge = "merge"
 mode_extract = "extract"
 mode = st.radio("Mode", (mode_merge, mode_extract))
-
 if mode == mode_merge:
     # Show the upload file widgets.
     image = st.file_uploader("Choose an image file",
@@ -45,7 +44,8 @@ if mode == mode_merge:
 
     # Convert the file after pressing the "convert" button.
     if image and audio is not None and st.button("Merge"):
-        converter.file_merge('./' + image.name, './' + audio.name, None)
+        result = converter.file_merge('./' + image.name, './' + audio.name, None)
+        st.image(result.name)
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
@@ -54,7 +54,9 @@ elif mode == mode_extract:
 
     # Convert the file after pressing the "convert" button.
     if uploaded_file is not None and st.button("Extract"):
-        converter.file_extract(uploaded_file.name, None)
+        result = converter.file_extract(uploaded_file.name, None)
+        st.audio(result.name)
+
 
 if st.button("Record"):
     # TODO: a way to record the user and convert it.
