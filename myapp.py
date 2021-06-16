@@ -43,9 +43,7 @@ def download_image_link(image):
         buffered = BytesIO()
         img.save(buffered, format="png")
         img_str = base64.b64encode(buffered.getvalue()).decode()
-        current_date = datetime.now().strftime("%Y-%m-%d %X")
-        new_filename = "result_{}.png".format(current_date)
-        href = f'<a href="data:file/png;base64,{img_str}" download="{new_filename}">Download result</a>'
+        href = f'<a href="data:file/png;base64,{img_str}" download="result.png">Download result</a>'
         return href
 
 
