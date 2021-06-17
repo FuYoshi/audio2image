@@ -14,7 +14,12 @@ def file_merge(image, audio):
     """ Function for merging image and audio file, deleting original audio
         file.
     """
-
+    if not os.path.isfile(image):
+        print("This image does not exist in the current directory.")
+        sys.exit(1)
+    if not os.path.isfile(audio):
+        print("This audio file does not exist in the current directory.")
+        sys.exit(1)
     with open(audio, 'rb') as a:
         audio_data = a.read()
 
@@ -31,6 +36,9 @@ def file_extract(image):
         the audio and image in seperate files, and deleting the "2 in 1" image.
     """
 
+    if not os.path.isfile(image):
+        print("This image does not exist in the current directory.")
+        sys.exit(1)
     with open(image, 'rb') as i:
         data = i.read()
 
