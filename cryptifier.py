@@ -1,3 +1,8 @@
+""" This script can encrypt and decrypt files efficiently in terms of time,
+    the resulting encrypted file does take up more space. For the encryption
+    all the program needs is a file and password arguments.
+"""
+
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
@@ -5,10 +10,13 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import sys
 import os
 import argparse
-import pathlib
 
 
 def cryptify(image, key):
+    """ Function that encrypts file with password, replacing original file
+        with encrypted file.
+    """
+
     salt = os.urandom(16)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -21,18 +29,28 @@ def cryptify(image, key):
     with open(image, 'rb') as f:
         data = f.read()
 
+    if marker in data:
+        print("File is already encrypted!")
+        sys.exit(1)
     fernet = Fernet(key)
     encData = fernet.encrypt(data)
-    ext = pathlib.Path(image).suffix
-    with open("result" + ext, 'wb') as image_file:
+    os.remove(image)
+    with open(image, 'wb') as image_file:
         image_file.write(encData + marker + salt)
 
 
 def decryptify(image, key):
+    """ Function that decrypts file with password, replacing encrypted file
+        with decrypted file.
+    """
+
     with open(image, 'rb') as f:
         data = f.read()
 
     marker = bytes("STARTHASH", encoding="ASCII")
+    if marker not in data:
+        print("File is not encrypted!")
+        sys.exit(1)
     extracted_salt = data.split(marker, 1)[1]
     extracted_data = data.split(marker, 1)[0]
 
@@ -47,11 +65,12 @@ def decryptify(image, key):
         fernet = Fernet(key)
         decdata = fernet.decrypt(extracted_data)
     except:
-        print("Incorrect password")
+        print("incorrect password")
         sys.exit(1)
-    ext = pathlib.Path(image).suffix
-    with open("result2" + ext, 'wb') as image_file:
+    os.remove(image)
+    with open(image, 'wb') as image_file:
         image_file.write(decdata)
+
 
 parser = argparse.ArgumentParser()
 
