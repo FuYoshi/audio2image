@@ -77,13 +77,13 @@ if mode == mode_merge:
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
-    uploaded_file = st.file_uploader("Choose a file to convert",
+    image_file = st.file_uploader("Choose a file to convert",
         type=["png", "jpg", "jpeg"])
 
     # Convert the file after pressing the "convert" button.
-    if uploaded_file is not None and st.button("Extract"):
-        save_uploaded_file(uploaded_file)
-        result = converter.file_extract('./tempDir/' + uploaded_file.name, None)
+    if image_file is not None and st.button("Extract"):
+        save_uploaded_file(image_file)
+        result = converter.file_extract('tempDir/' + image_file.name, None)
         st.audio(result.name)
 
 
