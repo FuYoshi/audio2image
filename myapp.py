@@ -50,7 +50,7 @@ def download_image_link(image):
         buffered = BytesIO()
         img.save(buffered, format="png")
         img_str = base64.b64encode(buffered.getvalue()).decode()
-        date = datetime.now().strftime("%Y-%m-%d %X")
+        date = datetime.now().strftime("%Y-%m-%d_%X")
         new_filename = "webapp_{}.png".format(date)
         href = f'<a href="data:file/png;base64,{img_str}" download="{new_filename}">Download result</a>'
         return href
@@ -73,7 +73,7 @@ if mode == mode_merge:
         save_uploaded_file(audio_file)
         result = converter.file_merge('./tempDir/' + image_file.name, './tempDir/' + audio_file.name, None)
         st.image(result.name)
-        st.markdown(download_image_link(result.name), unsafe_allow_html=True)
+        # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
@@ -83,7 +83,7 @@ elif mode == mode_extract:
     # Convert the file after pressing the "convert" button.
     if image_file is not None and st.button("Extract"):
         save_uploaded_file(image_file)
-        result = converter.file_extract('tempDir/' + image_file.name, None)
+        result = converter.file_extract('./tempDir/' + image_file.name, None)
         st.audio(result.name)
 
 
