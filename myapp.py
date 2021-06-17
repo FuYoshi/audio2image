@@ -67,10 +67,6 @@ if mode == mode_merge:
                                   type=["png", "jpg", "jpeg"])
     audio_file = st.file_uploader("Choose an audio file",
                                   type=["wav", "mp3"])
-    password = st.text_input("Choose a password", type="password")
-
-    if len(password) == 0:
-        password = None
 
     # Convert the file after pressing the "convert" button.
     if image_file and audio_file is not None and st.button("Merge"):
@@ -78,7 +74,7 @@ if mode == mode_merge:
         save_uploaded_file(audio_file)
         result = converter.file_merge('./tempDir/' + image_file.name,
                                       './tempDir/' + audio_file.name,
-                                      password)
+                                      None)
         st.image(result.name)
         # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
@@ -86,16 +82,11 @@ elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
     image_file = st.file_uploader("Choose a file to convert",
                                   type=["png", "jpg", "jpeg"])
-    password = st.text_input("Choose a password", type="password")
-
-    if len(password) == 0:
-        password = None
 
     # Convert the file after pressing the "convert" button.
     if image_file is not None and st.button("Extract"):
         save_uploaded_file(image_file)
-        result = converter.file_extract('./tempDir/' + image_file.name,
-                                        password)
+        result = converter.file_extract('./tempDir/' + image_file.name, None)
         st.audio(result.name)
 
 
