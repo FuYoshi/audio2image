@@ -1,30 +1,54 @@
-
-# Can record, play and display sounds from .wav files and user input.
-
-import os
-from random import sample
 import pyaudio as pa
 import wave
-#import sys
-#import struct
-import numpy as np
-#import librosa
-from scipy import signal
-#import scipy
-import scipy.io
-from scipy.io import wavfile
-import matplotlib.pyplot as plt
-from scipy.signal.spectral import spectrogram
-import IPython.display as ipd
+import argparse
+
+def parser():
+    parser = argparse.ArgumentParser()
+    required_name = parser.add_argument_group('required named arguments')
+    required_name.add_argument('--option',
+                               required='True',
+                               choices=('record','play'),
+                               dest='option',
+                               default='record',
+                               help='record or play a sound (default: record)',
+                               type=str
+                              )
+    parser.add_argument('-p', '--play',
+                        action='store',
+                        metavar='file',
+                        dest='file',
+                        help='file that will be played')
+    parser.add_argument('-r', '--record',
+                        action='store',
+                        metavar='file',
+                        dest='filename',
+                        help='filename if recording')
+    parser.add_argument('-d', '--duration',
+                        action='store',
+                        metavar='duration',
+                        dest='duration',
+                        help='duration of recording',
+                        type=int)
+    args = parser.parse_args()
+
+    mode = args.option
+    play = args.file
+    filename = args.filename
+    duration = args.duration
+
+    if mode == "record":
+        record(filename, duration)
+    elif mode == "play":
+        play_audio(play)
 
 # This function lets the user record a sound using their microphone. This
 # recording is converted to a .wav file.
-def record(outputFile):
+def record(outputFile, duration):
     CHUNK = 1024
     FORMAT = pa.paInt16
     CHANNELS = 1
     RATE = 44100
-    RECORD_SECONDS = 3
+    RECORD_SECONDS = duration
 
     # Makes a PyAudio object.
     p = pa.PyAudio()
@@ -46,7 +70,6 @@ def record(outputFile):
         frames.append(data)
 
     print("* done recording")
-
     stream.stop_stream()
     stream.close()
     p.terminate()
@@ -85,16 +108,4 @@ def play_audio(audio_file):
     stream.close()
     p.terminate()
 
-def create_spectorgram(audio_file):
-    sample_rate, samples = wavfile.read('output1.wav')
-    freq, times, spectrogram = signal.spectrogram(samples, sample_rate)
-
-    plt.pcolormesh(np.log(spectrogram))
-    plt.xlabel('Frequency (HZ)')
-    plt.ylabel('Time (SEC)')
-    plt.show()
-
-record('output1.wav')
-play_audio('output1.wav')
-create_spectorgram('output1.wav')
-
+parser()
