@@ -38,6 +38,7 @@ st.title("WEB APP TITLE")
 
 def save_uploaded_file(uploaded_file):
     """ Save the uploaded file in the heroku directory. """
+    # Code inspired by: https://blog.jcharistech.com/2021/01/21/how-to-save-uploaded-files-to-directory-in-streamlit-apps/
     with open(os.path.join("tempDir", uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
 
@@ -63,27 +64,32 @@ mode = st.radio("Mode", (mode_merge, mode_extract))
 if mode == mode_merge:
     # Show the upload file widgets.
     image_file = st.file_uploader("Choose an image file",
-        type=["png", "jpg", "jpeg"])
+                                  type=["png", "jpg", "jpeg"])
     audio_file = st.file_uploader("Choose an audio file",
-        type=["wav", "mp3"])
+                                  type=["wav", "mp3"])
+    password = st.text_input("Choose a password", type="password")
 
     # Convert the file after pressing the "convert" button.
     if image_file and audio_file is not None and st.button("Merge"):
         save_uploaded_file(image_file)
         save_uploaded_file(audio_file)
-        result = converter.file_merge('./tempDir/' + image_file.name, './tempDir/' + audio_file.name, None)
+        result = converter.file_merge('./tempDir/' + image_file.name,
+                                      './tempDir/' + audio_file.name,
+                                      password)
         st.image(result.name)
         # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
     image_file = st.file_uploader("Choose a file to convert",
-        type=["png", "jpg", "jpeg"])
+                                  type=["png", "jpg", "jpeg"])
+    password = st.text_input("Choose a password", type="password")
 
     # Convert the file after pressing the "convert" button.
     if image_file is not None and st.button("Extract"):
         save_uploaded_file(image_file)
-        result = converter.file_extract('./tempDir/' + image_file.name, None)
+        result = converter.file_extract('./tempDir/' + image_file.name,
+                                        password)
         st.audio(result.name)
 
 
