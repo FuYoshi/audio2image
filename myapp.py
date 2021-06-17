@@ -69,6 +69,9 @@ if mode == mode_merge:
                                   type=["wav", "mp3"])
     password = st.text_input("Choose a password", type="password")
 
+    if len(password) == 0:
+        password = None
+
     # Convert the file after pressing the "convert" button.
     if image_file and audio_file is not None and st.button("Merge"):
         save_uploaded_file(image_file)
@@ -84,6 +87,9 @@ elif mode == mode_extract:
     image_file = st.file_uploader("Choose a file to convert",
                                   type=["png", "jpg", "jpeg"])
     password = st.text_input("Choose a password", type="password")
+
+    if len(password) == 0:
+        password = None
 
     # Convert the file after pressing the "convert" button.
     if image_file is not None and st.button("Extract"):
