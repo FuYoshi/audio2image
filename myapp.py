@@ -37,9 +37,9 @@ st.title("WEB APP TITLE")
 
 
 def save_uploaded_file(uploaded_file):
+    """ Save the uploaded file in the heroku directory. """
     with open(os.path.join("tempDir", uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
-    return st.success("Saved file {} in tempDir".format(uploaded_file.name))
 
 
 def download_image_link(image):
