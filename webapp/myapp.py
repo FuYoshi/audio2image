@@ -73,7 +73,8 @@ if mode == mode_merge:
         save_uploaded_file(image_file)
         save_uploaded_file(audio_file)
         result = converter.file_merge('./tempDir/' + image_file.name,
-                                      './tempDir/' + audio_file.name, None)
+                                      './tempDir/' + audio_file.name,
+                                      None)
         st.image(result.name)
         # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
