@@ -42,7 +42,6 @@ def save_uploaded_file(uploaded_file):
     return st.success("Saved file {} in tempDir".format(uploaded_file.name))
 
 
-
 def download_image_link(image):
     """ Return a link that downloads the image. """
     # Code is consulted from:
