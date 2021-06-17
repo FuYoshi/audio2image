@@ -30,9 +30,17 @@ from datetime import datetime
 import streamlit as st
 import converter
 import base64
+import os
 
 
 st.title("WEB APP TITLE")
+
+
+def save_uploaded_file(uploaded_file):
+    with open(os.path.join("tempDir", uploaded_file.name), "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return st.success("Saved file {} in tempDir".format(uploaded_file.name))
+
 
 
 def download_image_link(image):
@@ -43,7 +51,9 @@ def download_image_link(image):
         buffered = BytesIO()
         img.save(buffered, format="png")
         img_str = base64.b64encode(buffered.getvalue()).decode()
-        href = f'<a href="data:file/png;base64,{img_str}" download="result.png">Download result</a>'
+        date = datetime.now().strftime("%Y-%m-%d %X")
+        new_filename = "webapp_{}.png".format(date)
+        href = f'<a href="data:file/png;base64,{img_str}" download="{new_filename}">Download result</a>'
         return href
 
 
@@ -53,14 +63,16 @@ mode_extract = "extract"
 mode = st.radio("Mode", (mode_merge, mode_extract))
 if mode == mode_merge:
     # Show the upload file widgets.
-    image = st.file_uploader("Choose an image file",
+    image_file = st.file_uploader("Choose an image file",
         type=["png", "jpg", "jpeg"])
-    audio = st.file_uploader("Choose an audio file",
+    audio_file = st.file_uploader("Choose an audio file",
         type=["wav", "mp3"])
 
     # Convert the file after pressing the "convert" button.
-    if image and audio is not None and st.button("Merge"):
-        result = converter.file_merge('./' + image.name, './' + audio.name, None)
+    if image_file and audio_file is not None and st.button("Merge"):
+        save_uploaded_file(image_file)
+        save_uploaded_file(audio_file)
+        result = converter.file_merge('./tempDir/' + image_file.name, './tempDir/' + audio_file.name, None)
         st.image(result.name)
         st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
@@ -71,7 +83,8 @@ elif mode == mode_extract:
 
     # Convert the file after pressing the "convert" button.
     if uploaded_file is not None and st.button("Extract"):
-        result = converter.file_extract(uploaded_file.name, None)
+        save_uploaded_file(uploaded_file)
+        result = converter.file_extract('./tempDir/' + uploaded_file.name, None)
         st.audio(result.name)
 
 
