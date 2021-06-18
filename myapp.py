@@ -23,13 +23,8 @@ requirements.txt: this file is used by heroku to import modules.
 setup.sh: this file is used by heroku.
 """
 
-
-from io import BytesIO
-from PIL import Image
-from datetime import datetime
 import streamlit as st
 import converter
-import base64
 import os
 
 
@@ -41,20 +36,6 @@ def save_uploaded_file(uploaded_file):
     # Code inspired by: https://blog.jcharistech.com/2021/01/21/how-to-save-uploaded-files-to-directory-in-streamlit-apps/
     with open(os.path.join("tempDir", uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
-
-
-def download_image_link(image):
-    """ Return a link that downloads the image. """
-    # Code is consulted from:
-    # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806/18
-    with Image.open(image) as img:
-        buffered = BytesIO()
-        img.save(buffered, format="png")
-        img_str = base64.b64encode(buffered.getvalue()).decode()
-        date = datetime.now().strftime("%Y-%m-%d_%X")
-        new_filename = "webapp_{}.png".format(date)
-        href = f'<a href="data:file/png;base64,{img_str}" download="{new_filename}">Download result</a>'
-        return href
 
 
 # Show the radio button widget to select the conversion mode.
@@ -75,7 +56,6 @@ if mode == mode_merge:
         result = converter.file_merge('./tempDir/' + image_file.name,
                                       './tempDir/' + audio_file.name)
         st.image(result.name)
-        # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
