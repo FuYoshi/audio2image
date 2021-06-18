@@ -73,8 +73,7 @@ if mode == mode_merge:
         save_uploaded_file(image_file)
         save_uploaded_file(audio_file)
         result = converter.file_merge('./tempDir/' + image_file.name,
-                                      './tempDir/' + audio_file.name,
-                                      None)
+                                      './tempDir/' + audio_file.name)
         st.image(result.name)
         # st.markdown(download_image_link(result.name), unsafe_allow_html=True)
 
@@ -86,8 +85,9 @@ elif mode == mode_extract:
     # Convert the file after pressing the "convert" button.
     if image_file is not None and st.button("Extract"):
         save_uploaded_file(image_file)
-        result = converter.file_extract('./tempDir/' + image_file.name, None)
-        st.audio(result.name)
+        im, a = converter.file_extract('./tempDir/' + image_file.name)
+        st.image(im.name)
+        st.audio(a.name)
 
 
 if st.button("Record"):
