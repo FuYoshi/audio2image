@@ -3,12 +3,14 @@
 import argparse
 import pyaudio as pa
 import wave
+import os
 import binascii
 import numpy as np
 from scipy import signal
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
 from PIL import Image
+from pydub import AudioSegment, audio_segment
 
 def parser():
     parser = argparse.ArgumentParser()
@@ -49,16 +51,6 @@ def parser():
         wav_to_pixel(file, filename)
     elif mode == "ita":
         image_to_wav(file, filename)
-
-
-def create_spectorgram(audio_file):
-    sample_rate, samples = wavfile.read('output1.wav')
-    freq, times, spectrogram = signal.spectrogram(samples, sample_rate)
-
-    plt.pcolormesh(np.log(spectrogram))
-    plt.xlabel('Frequency (HZ)')
-    plt.ylabel('Time (SEC)')
-    plt.show()
 
 def wav_to_pixel(audio_file, output_filename):
     with open(audio_file, 'rb') as f:
@@ -114,30 +106,24 @@ def image_to_wav(image, output_filename):
     wf.writeframes(sound_data2)
     wf.close()
 
-def mp3_to_pixel(audio_file):
-    data = bytearray(open('output1.mp3', 'rb').read())
-    pixels = []
-    pixel = []
+def wav_to_mp3(wav_file, output_filename):
+    wav_audio = AudioSegment.from_file(wav_file, format="wav")
+    wav_audio.export(output_filename + '.mp3', format="mp3")
 
-    for i in range(0, len(data)):
-        if len(pixel) == 3:
-            pixels.append(pixel)
-            pixel = []
-        else:
-            pixel.append(data[i])
+def mp3_to_wav(mp3_file, output_filename):
+    mp3_audio = AudioSegment.from_file(mp3_file, format="mp3")
+    mp3_audio.export(output_filename + '.wav', format="wav")
 
-    print(pixels)
-    print(len(pixels))
-    gcd = np.gcd(len(pixels), 500)
+def mp3_to_image(mp3_file, image_filename):
+    mp3_to_wav(mp3_file, "wav69")
+    wav_to_pixel('wav69.wav', image_filename)
+    os.remove("wav69.wav")
 
-    im = np.zeros([gcd, int((len(pixels) / gcd)), 3], dtype=np.uint8)
-    l = 0
-    for q in range(0, gcd):
-        for p in range(0, (int(len(pixels) / gcd))):
-            im[q][p] = pixels[l]
-            l += 1
+def image_to_mp3(png_image, output_filename):
+    image_to_wav(png_image, 'wav69')
+    wav_to_mp3('wav69.wav', output_filename)
+    os.remove("wav69.wav")
 
-    img = Image.fromarray(im)
-    img.save('test.png')
-
-parser()
+#parser()
+mp3_to_image('output1.mp3', 'imageMP3')
+image_to_mp3('imageMP3.png', 'newMP3')
