@@ -27,9 +27,12 @@ setup.sh: this file is used by heroku.
 import streamlit as st
 import converter
 import os
+import base64
+from datetime import datetime
 
 
 st.title("WEB APP TITLE")
+st.text("You can't hear images, or can you?")
 
 
 def save_uploaded_file(uploaded_file):
@@ -37,6 +40,18 @@ def save_uploaded_file(uploaded_file):
     # Code inspired by: https://blog.jcharistech.com/2021/01/21/how-to-save-uploaded-files-to-directory-in-streamlit-apps/
     with open(os.path.join("tempDir", uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
+
+
+def download_link(filename):
+    """ Return a link that downloads the given file.  """
+    file = open(filename, 'rb')
+    contents = file.read()
+    data_url = base64.b64encode(contents).decode()
+    date = datetime.now().strftime("%Y-%m-%d_%X")
+    #TODO: change webapp to app name.
+    new_filename = "webapp_{}.png".format(date)
+    href = f'<a href="data:file/png;base64,{data_url}" download="{new_filename}">Download</a>'
+    return href
 
 
 # Show the radio button widget to select the conversion mode.
@@ -57,6 +72,7 @@ if mode == mode_merge:
         result = converter.file_merge('./tempDir/' + image_file.name,
                                       './tempDir/' + audio_file.name)
         st.image(result.name)
+        st.markdown(download_link(result.name), unsafe_allow_html=True)
 
 elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
