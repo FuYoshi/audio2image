@@ -44,6 +44,7 @@ def save_uploaded_file(uploaded_file):
 
 def download_link(filename):
     """ Return a link that downloads the given file.  """
+    # Code inspired by: https://discuss.streamlit.io/t/how-to-show-local-gif-image/3408/3
     file = open(filename, 'rb')
     contents = file.read()
     data_url = base64.b64encode(contents).decode()
