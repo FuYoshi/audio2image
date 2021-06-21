@@ -26,6 +26,7 @@ setup.sh: this file is used by heroku.
 
 import streamlit as st
 import converter
+import rep
 import os
 import base64
 from datetime import datetime
@@ -85,4 +86,5 @@ elif mode == mode_ita:
 
 if st.button("Record"):
     # TODO: a way to record the user and convert it.
-    st.write("recording...")
+    rep.record('test', 3)
+    rep.play('test.wav')
