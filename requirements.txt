@@ -3,5 +3,4 @@ argparse
 pyaudio
 wave
 numpy
-PIL
 pydub
