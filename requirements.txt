@@ -7,3 +7,4 @@ pydub
 Image
 AudioSegment
 ffmpeg
+ffprobe
