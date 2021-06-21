@@ -3,4 +3,3 @@ argparse
 pyaudio
 libasound
 portaudio19
-python3-pyaudio
