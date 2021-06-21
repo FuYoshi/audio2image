@@ -31,7 +31,7 @@ import base64
 from datetime import datetime
 
 
-st.title("WEB APP TITLE")
+st.title("TITLE")
 st.text("You can't hear images, or can you?")
 
 
