@@ -4,3 +4,5 @@ PyAudio
 wave
 numpy
 pydub
+PIL
+binascii
