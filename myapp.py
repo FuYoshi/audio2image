@@ -27,6 +27,7 @@ setup.sh: this file is used by heroku.
 import streamlit as st
 import converter
 import rep
+import isc
 import os
 import base64
 from datetime import datetime
@@ -61,15 +62,17 @@ mode = st.radio("Mode", (mode_ati, mode_ita))
 if mode == mode_ati:
     # Show the upload file widgets.
     audio_file = st.file_uploader("Choose an audio file to convert",
-                                  type=["wav"])
+                                  type=["mp3"])
 
     # Convert the file after pressing the "convert" button.
     if audio_file is not None and st.button("Convert"):
         save_uploaded_file(audio_file)
+        isc.mp3_to_image('./tempDir/' + audio_file.name, 'test')
+        result = 'test.png'
         #result = converter.file_merge('./tempDir/' + image_file.name,
         #                              './tempDir/' + audio_file.name)
-        #st.image(result.name)
-        #st.markdown(download_link(result.name), unsafe_allow_html=True)
+        st.image(result.name)
+        st.markdown(download_link(result.name), unsafe_allow_html=True)
 
 elif mode == mode_ita:
     # Show the upload file widget that accepts image files.
