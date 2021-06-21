@@ -31,7 +31,7 @@ import base64
 from datetime import datetime
 
 
-st.title("WEB APP TITLE")
+st.title("Audio to Image compression")
 st.text("You can't hear images, or can you?")
 
 
@@ -54,8 +54,8 @@ def download_link(filename):
 
 
 # Show the radio button widget to select the conversion mode.
-mode_merge = "lol2"
-mode_extract = "extract12"
+mode_merge = "Audio to Image"
+mode_extract = "Image to Audio"
 mode = st.radio("Mode", (mode_merge, mode_extract))
 if mode == mode_merge:
     # Show the upload file widgets.
