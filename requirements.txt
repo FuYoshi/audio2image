@@ -6,3 +6,4 @@ numpy
 pydub
 Image
 AudioSegment
+ffmpeg
