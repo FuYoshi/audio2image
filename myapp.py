@@ -54,36 +54,33 @@ def download_link(filename):
 
 
 # Show the radio button widget to select the conversion mode.
-mode_merge = "Audio to Image"
-mode_extract = "Image to Audio"
-mode = st.radio("Mode", (mode_merge, mode_extract))
-if mode == mode_merge:
+mode_ati = "Audio to Image"
+mode_ita = "Image to Audio"
+mode = st.radio("Mode", (mode_ati, mode_ita))
+if mode == mode_ati:
     # Show the upload file widgets.
-    image_file = st.file_uploader("Choose an image file",
-                                  type=["png", "jpg", "jpeg"])
-    audio_file = st.file_uploader("Choose an audio file",
-                                  type=["wav", "mp3"])
+    audio_file = st.file_uploader("Choose an audio file to convert",
+                                  type=["wav"])
 
     # Convert the file after pressing the "convert" button.
-    if image_file and audio_file is not None and st.button("Merge"):
-        save_uploaded_file(image_file)
+    if audio_file is not None and st.button("Convert"):
         save_uploaded_file(audio_file)
-        result = converter.file_merge('./tempDir/' + image_file.name,
-                                      './tempDir/' + audio_file.name)
-        st.image(result.name)
-        st.markdown(download_link(result.name), unsafe_allow_html=True)
+        #result = converter.file_merge('./tempDir/' + image_file.name,
+        #                              './tempDir/' + audio_file.name)
+        #st.image(result.name)
+        #st.markdown(download_link(result.name), unsafe_allow_html=True)
 
-elif mode == mode_extract:
+elif mode == mode_ita:
     # Show the upload file widget that accepts image files.
-    image_file = st.file_uploader("Choose a file to convert",
-                                  type=["png", "jpg", "jpeg"])
+    image_file = st.file_uploader("Choose a image file to convert",
+                                  type=["png"])
 
     # Convert the file after pressing the "convert" button.
-    if image_file is not None and st.button("Extract"):
+    if image_file is not None and st.button("Convert"):
         save_uploaded_file(image_file)
-        im, a = converter.file_extract('./tempDir/' + image_file.name)
-        st.image(im.name)
-        st.audio(a.name)
+        #im, a = converter.file_extract('./tempDir/' + image_file.name)
+        #st.image(im.name)
+        #st.audio(a.name)
 
 
 if st.button("Record"):
