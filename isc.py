@@ -169,5 +169,3 @@ def image_to_mp3(png_image, output_filename):
     image_to_wav(png_image, 'wav69')
     wav_to_mp3('wav69.wav', output_filename)
     os.remove("wav69.wav")
-
-parser()
