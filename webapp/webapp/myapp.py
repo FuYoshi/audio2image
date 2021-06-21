@@ -26,14 +26,12 @@ setup.sh: this file is used by heroku.
 
 import streamlit as st
 import converter
-import rep
-import isc
 import os
 import base64
 from datetime import datetime
 
 
-st.title("Audio to Image compression")
+st.title("TITLE")
 st.text("You can't hear images, or can you?")
 
 
@@ -50,44 +48,46 @@ def download_link(filename):
     contents = file.read()
     data_url = base64.b64encode(contents).decode()
     date = datetime.now().strftime("%Y-%m-%d_%X")
+    #TODO: change webapp to app name.
     new_filename = "webapp_{}.png".format(date)
     href = f'<a href="data:file/png;base64,{data_url}" download="{new_filename}">Download</a>'
     return href
 
 
 # Show the radio button widget to select the conversion mode.
-mode_ati = "Audio to Image"
-mode_ita = "Image to Audio"
-mode = st.radio("Mode", (mode_ati, mode_ita))
-if mode == mode_ati:
+mode_merge = "Audio to Image"
+mode_extract = "Image to Audio"
+mode = st.radio("Mode", (mode_merge, mode_extract))
+
+if mode == mode_merge:
     # Show the upload file widgets.
-    audio_file = st.file_uploader("Choose an audio file to convert",
-                                  type=["mp3"])
+    image_file = st.file_uploader("Choose an image file",
+                                  type=["png", "jpg", "jpeg"])
+    audio_file = st.file_uploader("Choose an audio file",
+                                  type=["wav", "mp3"])
 
     # Convert the file after pressing the "convert" button.
-    if audio_file is not None and st.button("Convert"):
+    if image_file and audio_file is not None and st.button("Merge"):
+        save_uploaded_file(image_file)
         save_uploaded_file(audio_file)
-        isc.mp3_to_image('./tempDir/' + audio_file.name, 'test')
-        result = 'test.png'
-        #result = converter.file_merge('./tempDir/' + image_file.name,
-        #                              './tempDir/' + audio_file.name)
+        result = converter.file_merge('./tempDir/' + image_file.name,
+                                      './tempDir/' + audio_file.name)
         st.image(result.name)
         st.markdown(download_link(result.name), unsafe_allow_html=True)
 
-elif mode == mode_ita:
+elif mode == mode_extract:
     # Show the upload file widget that accepts image files.
-    image_file = st.file_uploader("Choose a image file to convert",
-                                  type=["png"])
+    image_file = st.file_uploader("Choose a file to convert",
+                                  type=["png", "jpg", "jpeg"])
 
     # Convert the file after pressing the "convert" button.
-    if image_file is not None and st.button("Convert"):
+    if image_file is not None and st.button("Extract"):
         save_uploaded_file(image_file)
-        #im, a = converter.file_extract('./tempDir/' + image_file.name)
-        #st.image(im.name)
-        #st.audio(a.name)
+        im, a = converter.file_extract('./tempDir/' + image_file.name)
+        st.image(im.name)
+        st.audio(a.name)
 
 
 if st.button("Record"):
     # TODO: a way to record the user and convert it.
-    rep.record('test', 3)
-    rep.play('test.wav')
+    st.write("recording...")

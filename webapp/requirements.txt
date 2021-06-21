@@ -1,2 +1,10 @@
 streamlit
 argparse
+PyAudio
+wave
+numpy
+pydub
+Image
+AudioSegment
+ffmpeg
+ffprobe
