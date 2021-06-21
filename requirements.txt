@@ -1,3 +1,8 @@
 streamlit
 argparse
 PyAudio
+wave
+binascii
+numpy
+PIL
+pydub
