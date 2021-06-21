@@ -26,7 +26,6 @@ setup.sh: this file is used by heroku.
 
 import streamlit as st
 import converter
-import isc
 import os
 import base64
 from datetime import datetime
