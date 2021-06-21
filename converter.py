@@ -29,6 +29,7 @@ def file_merge(image, audio):
     with open(image, 'ab') as i:
         i.write(marker + ext + marker + audio_data)
     os.remove(audio)
+    return i
 
 
 def file_extract(image):
@@ -52,6 +53,7 @@ def file_extract(image):
         im.write(image_data)
     with open(ext_audio, 'wb') as a:
         a.write(audio_data)
+    return im, a
 
 
 parser = argparse.ArgumentParser()
@@ -63,9 +65,9 @@ parser.add_argument("-e", "--extract", help="Extract audio from image",
 
 args = parser.parse_args()
 
-if (args.extract is None and args.merge is None):
-    print("Incorrect usage, add flag --help for help")
-    sys.exit(1)
+# if (args.extract is None and args.merge is None):
+#     print("Incorrect usage, add flag --help for help")
+#     sys.exit(1)
 
 if (args.extract is not None):
     file_extract(args.extract)
