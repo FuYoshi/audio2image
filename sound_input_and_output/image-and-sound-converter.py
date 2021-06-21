@@ -73,12 +73,19 @@ def wav_to_pixel(audio_file, output_filename):
             pixel.append(0)
 
         pixels.append(pixel)
+    gcd = 0
+    gcd2 = 0
+    for w in range(1, len(pixels)):
+        num = len(pixels) / w
+        if w >= 100 and num.is_integer() == True:
+            gcd = int(num)
+            gcd2 = int(w)
+            break
 
-    gcd = np.gcd(len(pixels), 700)
-    im = np.zeros([gcd, int((len(pixels) / gcd)), 3], dtype=np.uint8)
+    im = np.zeros([gcd2, gcd, 3], dtype=np.uint8)
     l = 0
-    for q in range(0, gcd):
-        for p in range(0, (int(len(pixels) / gcd))):
+    for q in range(0, gcd2):
+        for p in range(0, gcd):
             im[q][p] = pixels[l]
             l += 1
 
