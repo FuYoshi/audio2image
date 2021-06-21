@@ -55,9 +55,10 @@ def download_link(filename):
 
 
 # Show the radio button widget to select the conversion mode.
-mode_merge = "merge"
-mode_extract = "extract"
+mode_merge = "Audio to Image"
+mode_extract = "Image to Audio"
 mode = st.radio("Mode", (mode_merge, mode_extract))
+
 if mode == mode_merge:
     # Show the upload file widgets.
     image_file = st.file_uploader("Choose an image file",

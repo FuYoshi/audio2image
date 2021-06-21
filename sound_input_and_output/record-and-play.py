@@ -1,9 +1,27 @@
+##################################################
+# Multimedia 2020-2021
+# Coen de Graaf & Lennaert Feijtes and Yoshi Fu
+##################################################
+#
+# File created and functions implemented by: Lennaert Feijtes (13439103)
+# Description:
+# This program allows the user record and play .wav files.
+#
+# HELP: python3 record-and-play.py -h
+#
+##################################################
+
+
 import pyaudio as pa
 import wave
 import argparse
 
+# Parser used for command line arguments and for providing information on
+# how to use this script.
 def parser():
     parser = argparse.ArgumentParser()
+
+    # Required and optional arguments
     required_name = parser.add_argument_group('required named arguments')
     required_name.add_argument('--option',
                                required='True',
@@ -36,6 +54,7 @@ def parser():
     filename = args.filename
     duration = args.duration
 
+    # Checks for the mode of the user and exectues the right based on the mode.
     if mode == "record":
         record(filename, duration)
     elif mode == "play":
