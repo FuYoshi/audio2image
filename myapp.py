@@ -26,7 +26,6 @@ setup.sh: this file is used by heroku.
 
 import streamlit as st
 import converter
-import rANDp
 import os
 import base64
 from datetime import datetime
@@ -66,7 +65,6 @@ if mode == mode_ati:
     # Convert the file after pressing the "convert" button.
     if audio_file is not None and st.button("Convert"):
         save_uploaded_file(audio_file)
-        rANDp.record('test', 3)
         #result = converter.file_merge('./tempDir/' + image_file.name,
         #                              './tempDir/' + audio_file.name)
         #st.image(result.name)
