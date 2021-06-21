@@ -126,5 +126,3 @@ def play_audio(audio_file):
 
     stream.close()
     p.terminate()
-
-parser()
