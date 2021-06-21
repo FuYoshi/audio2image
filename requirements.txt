@@ -2,7 +2,6 @@ streamlit
 argparse
 pyaudio
 wave
-binascii
 numpy
 PIL
 pydub
