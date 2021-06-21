@@ -1,6 +1,6 @@
 streamlit
 argparse
 pyaudio
-libasound-dev
-portaudio19-dev
+libasound
+portaudio19
 python3-pyaudio
