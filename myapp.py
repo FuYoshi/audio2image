@@ -54,7 +54,7 @@ def download_link(filename):
 
 
 # Show the radio button widget to select the conversion mode.
-mode_merge = "merge"
+mode_merge = "lol"
 mode_extract = "extract"
 mode = st.radio("Mode", (mode_merge, mode_extract))
 if mode == mode_merge:
