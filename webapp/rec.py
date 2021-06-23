@@ -94,7 +94,7 @@ def record(outputFile, duration):
     p.terminate()
 
     # .wav file is made based on the information that hase been collected.
-    wf = wave.open(outputFile, 'wb')
+    wf = wave.open(outputFile + '.wav', 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(RATE)
